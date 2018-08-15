@@ -1,0 +1,7 @@
+C:\Users\willi\source\repos\MonstersAndHeroes\MonstersAndHeroes\bin\Debug\MonstersAndHeroes.exe.config
+C:\Users\willi\source\repos\MonstersAndHeroes\MonstersAndHeroes\bin\Debug\MonstersAndHeroes.exe
+C:\Users\willi\source\repos\MonstersAndHeroes\MonstersAndHeroes\bin\Debug\MonstersAndHeroes.pdb
+C:\Users\willi\source\repos\MonstersAndHeroes\MonstersAndHeroes\obj\Debug\MonstersAndHeroes.csprojAssemblyReference.cache
+C:\Users\willi\source\repos\MonstersAndHeroes\MonstersAndHeroes\obj\Debug\MonstersAndHeroes.csproj.CoreCompileInputs.cache
+C:\Users\willi\source\repos\MonstersAndHeroes\MonstersAndHeroes\obj\Debug\MonstersAndHeroes.exe
+C:\Users\willi\source\repos\MonstersAndHeroes\MonstersAndHeroes\obj\Debug\MonstersAndHeroes.pdb
