@@ -16,13 +16,14 @@ namespace MonstersAndHeroes
         static int[]        positionTitle       = new int[2] { 20, 2 };
         static int[]        dimensionTitle      = new int[2] { 85, 6 };
             //Board - Stats
-        public static int[] positionBoard       = new int[2] { 10, 9 };
-        public static int   dimension           = 30;
-        public static int[] boardDimension      = new int[2] { dimension * 2, dimension };
-        static int[]        positionStatHero    = new int[2] { 76, 9 };
+        public static int[] positionBoard       = new int[2] { 5, 9 };
+        public static int[] boardDimension      = new int[2] {72, 30};
+
+        static int[]        positionStatHero    = new int[2] { 79, 11 };
         static int[]        dimensionStatHero   = new int[2] { 40, 12 };
         static int[]        dimensionStatArea   = new int[2] { 45, 12 };
-        static int[]        positionStatMonster = new int[2] { 76, 25 };
+
+        static int[]        positionStatMonster = new int[2] { 79, 25 };
         static int[]        dimensionStatMonster   = new int[2] { 40, 12 };
         //Combat 
         static int[]        positionCombat      = new int[2] { 25, 35 };
@@ -36,6 +37,20 @@ namespace MonstersAndHeroes
                             @" /_/  /_/\___/_//_/___/\__/\__/_/ /___/_/ |_/_//_/\_,_/_//_/\__/_/  \___/\__/___/  "
                     };
 
+        static string[] Rocks = new[]
+        {
+            @"░░░",
+            @"░░░",
+            @"░░░",
+        };
+
+        static string[] Tree = new[]
+        {
+            @"  ^  ",
+            @" /║\ ",
+            @"//║\\",
+            @"  ║  ",     
+        };
        
         static string[] Dwarf = new[] {
             @"        __    ",
@@ -247,10 +262,6 @@ namespace MonstersAndHeroes
         {
             Display.Table(positionBoard[0], positionBoard[1], boardDimension[0], boardDimension[1]);
         }
-        //public static void CombatBoard()
-        //{
-        //    Display.Table(positionCombat[0], positionCombat[1], 42, 7);
-        //}
         public static void MonsterStatArea()
         {
             Display.Table(positionStatMonster[0], positionStatMonster[1], dimensionStatArea[0], dimensionStatArea[1]);
@@ -286,7 +297,6 @@ namespace MonstersAndHeroes
                 Console.Write(str.PadRight(dimensionStatArea[0] - 2));
             }
         }
-
         public static void ClearCombatBoard()
         {
             for (int i = 1; i < 7; i++)
@@ -294,6 +304,46 @@ namespace MonstersAndHeroes
                 Console.SetCursorPosition(positionCombat[0] + 2, positionCombat[1] + i);
                 Console.Write("                                        ");
             }
+        }
+
+        //DISPLAY HERO POSITION
+        public static void HeroPosition(Hero hero)
+        {
+            Console.SetCursorPosition(hero.Coordinate.x + Display.positionBoard[0], hero.Coordinate.y + Display.positionBoard[1]);
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.Write("H");
+            Console.ResetColor();
+        }
+        public static void ClearHeroPosition(Hero hero)
+        {
+            Console.SetCursorPosition(hero.Coordinate.x + Display.positionBoard[0], hero.Coordinate.y + Display.positionBoard[1]);
+            Console.Write(" ");
+        }
+
+        //DISPLAY MONSTER
+        public static void MonsterPosition(Monster monster)
+        {
+            Console.SetCursorPosition(monster.Coordinate.x + Display.positionBoard[0], monster.Coordinate.y + Display.positionBoard[1]);
+            if (monster is Dragon)
+            {
+                Console.Write("D");
+            }
+            else if (monster is Orc)
+            {
+                Console.Write("O");
+            }
+            else if (monster is Wolf)
+            {
+                Console.Write("W");
+            }
+            Console.SetCursorPosition(monster.Coordinate.x + Display.positionBoard[0], monster.Coordinate.y + Display.positionBoard[1]);
+        }
+        public static void DeadMonster(Monster monster)
+        {
+            Console.SetCursorPosition(monster.Coordinate.x + Display.positionBoard[0], monster.Coordinate.y + Display.positionBoard[1]);
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write("X");
+            Console.ResetColor();
         }
 
         //PRINTING STATS
@@ -307,7 +357,6 @@ namespace MonstersAndHeroes
 
             return "";
         }
-
         private static string[] GetAscii(Character character)
         {
             switch (character.GetInfoPerso()["Class"])
@@ -326,9 +375,27 @@ namespace MonstersAndHeroes
                     return null;
             }
         }
-
         public static void HealthBar(Character character)
         {
+            int x = 0;
+            int y = 0;
+
+
+            if (character is Hero)
+            {
+                x = positionStatHero[0];
+                y = positionStatHero[1];
+            }
+            else
+            {
+                x = positionStatMonster[0];
+                y = positionStatMonster[1];
+            }
+
+            int xOffSet = 21;
+            int yOffSet = y + 3;
+
+            Console.SetCursorPosition(x + xOffSet, yOffSet - 1);
             string leftHPStr = "▀";
             Console.Write("HP ");
             Console.ForegroundColor = ConsoleColor.DarkGreen;
@@ -343,9 +410,69 @@ namespace MonstersAndHeroes
                 Console.Write(leftHPStr);
             }
             Console.ResetColor();
-            Console.Write(" {0}/{1}", character.HP, character.MaxHP);
+            Console.Write(" {0}/{1}", character.HP.ToString().PadLeft(2), character.MaxHP.ToString().PadLeft(2));
         }
 
+        public static void RefreshStat(Character character)
+        {
+            int x = 0;
+            int y = 0;
+
+
+            if (character is Hero)
+            {
+                x = positionStatHero[0];
+                y = positionStatHero[1];
+            }
+            else
+            {
+                x = positionStatMonster[0];
+                y = positionStatMonster[1];
+            }
+
+            int xOffSet = 21;
+            int yOffSet = y + 3;
+
+            Console.SetCursorPosition(x + xOffSet, yOffSet - 1);
+            Display.HealthBar(character);
+
+            Console.SetCursorPosition(x + xOffSet, yOffSet - 1);
+            Display.HealthBar(character);
+
+            Console.SetCursorPosition(x + xOffSet, yOffSet + 6);
+            if (!character.Alive)
+            {
+                Console.Write("State".PadRight(10));
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Write("DEAD".PadRight(5));
+                Console.ResetColor();
+            }
+
+        }
+
+        public static void ClearHealthBar(Character character)
+        {
+            int x = 0;
+            int y = 0;
+
+
+            if (character is Hero)
+            {
+                x = positionStatHero[0];
+                y = positionStatHero[1];
+            }
+            else
+            {
+                x = positionStatMonster[0];
+                y = positionStatMonster[1];
+            }
+
+            int xOffSet = 21;
+            int yOffSet = y + 3;
+
+            Console.SetCursorPosition(x + xOffSet, yOffSet - 1);
+            Console.Write("                ");
+        }
         public static void Stats(Character character)
         {
             int x = 0;
@@ -389,7 +516,6 @@ namespace MonstersAndHeroes
                 }
             }
         }
-
         public static void CharacterStat(Character character)
         {
             int x = 0;
@@ -407,7 +533,6 @@ namespace MonstersAndHeroes
                 y = positionStatMonster[1];
             }
 
-            Display.ClearStatArea(character);
             Display.Ascii(x + 2, y + 1, Display.GetAscii(character));
 
             int xOffSet = 21;
@@ -429,25 +554,6 @@ namespace MonstersAndHeroes
                 Console.Write(line);
             }
         }
-        public static void Opponents(Hero hero, Monster monster)
-        {
-            switch (monster.GetInfoPerso()["Class"])
-            {
-                case "Orc":
-                    Display.CharacterStat(monster);
-                    break;
-                case "Dragon":
-                    Display.CharacterStat(monster);
-                    break;
-                case "Wolf":
-                    Display.CharacterStat(monster);
-                    break;
-                default:
-                    break;
-            }
-            Console.ReadKey();
-        }
-
         public static void title()
         {
             int counter = positionTitle[1] + 1;
@@ -458,7 +564,6 @@ namespace MonstersAndHeroes
                 counter++;
             }
         }
-
         public static void Ascii(int x, int y, string[] asci)
         {
             int counter = y;
@@ -467,6 +572,11 @@ namespace MonstersAndHeroes
                 Console.SetCursorPosition(x, y++);
                 Console.Write(line);
             }
+        }
+
+        public static void Three()
+        {
+            Ascii(20, 20, Tree);
         }
     }
 }

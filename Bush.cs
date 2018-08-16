@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace MonstersAndHeroes
 {
-    public abstract class Monster : Character, ISprite
+    class Bush : Sprite, ISprite
     {
-        public Monster(int x, int y): base(x, y)
-        {
-        }
+        
     }
 }

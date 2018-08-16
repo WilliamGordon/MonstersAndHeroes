@@ -9,7 +9,7 @@ namespace MonstersAndHeroes
     class Orc : Monster
     {
         //CONSTRUCTOR
-        public Orc()
+        public Orc(int x, int y) : base(x, y)
         {
             Gold = Dice.Throw4();
             Leather = 0;

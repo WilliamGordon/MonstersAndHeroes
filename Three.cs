@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace MonstersAndHeroes
 {
-    static class GameSetup
+    class Three : Sprite, ISprite
     {
-
+      
     }
 }

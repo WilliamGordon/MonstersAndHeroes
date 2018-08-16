@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MonstersAndHeroes
 {
-    abstract class Character
+    public abstract class Character 
     {
         //PROPRIETIES
         private bool _Alive;
@@ -18,8 +18,14 @@ namespace MonstersAndHeroes
         private int _MaxHP;
         private int _BonusStrength;
         private int _BonusStamina;
-
         private int _tempDamage;
+        private Coordinate _Coordinate;
+
+        public Coordinate Coordinate
+        {
+            get { return _Coordinate; }
+            set { _Coordinate = value; }
+        }
 
         public int TempDamage
         {
@@ -68,8 +74,7 @@ namespace MonstersAndHeroes
             get { return _HP; }
         }
 
-        //CONSTRUCTORS
-        public Character()
+        public Character(int x, int y)
         {
             _Strengh = Dice.Thow4TimesGetBest3() + BonusStrength;
             _Stamina = Dice.Thow4TimesGetBest3() + BonusStamina;
@@ -83,9 +88,34 @@ namespace MonstersAndHeroes
             }
             _MaxHP = this.HP;
             _Alive = true;
+            this._Coordinate.x = x;
+            this._Coordinate.y = y;
         }
 
         //METHODS
+        public void Move(string direction)
+        {
+            if(direction == "left")
+            {
+                this._Coordinate.x--;
+            }
+
+            if(direction == "right")
+            {
+                this._Coordinate.x++;
+            }
+
+            if (direction == "down")
+            {
+                this._Coordinate.y++;
+            }
+
+            if (direction == "up")
+            {
+                this._Coordinate.y--;
+            }
+        }
+
         public virtual void Attack(Character other)
         {
             if(other.Alive && this.Alive)

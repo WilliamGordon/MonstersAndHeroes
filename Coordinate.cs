@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MonstersAndHeroes
 {
-    struct Coordinate
+    public struct Coordinate
     {
         public int x;
         public int y;

@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace MonstersAndHeroes
 {
-    abstract class Hero : Character
+    public abstract class Hero : Character, ISprite
     {
         //CONSTRUCTOR
-        public Hero()
+        public Hero(int x, int y) : base(x, y)
         {
             Gold = 0;
             Leather = 0;
