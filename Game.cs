@@ -25,7 +25,6 @@ namespace MonstersAndHeroes
             {
                 hero = new Dwarf(1,1);
             }
-
             //ADDING THREES
 
 
@@ -63,33 +62,29 @@ namespace MonstersAndHeroes
                         }
                     }
                 }
-
-                for (int i = 1; i < 10; i++)
+                //FIRST BUSH
+                for (int i = 0; i < Display.firstBushDimension[1]; i++)
                 {
-                    for (int j = 1; j < 10; j++)
+                    for (int j = 0; j < Display.firstBushDimension[0]; j++)
                     {
-                        if(j == tempX && i == tempY)
+                        if(j + Display.firstBushPosition[0] == tempX && i + Display.firstBushPosition[1] == tempY)
                         {
                             goodCoordinate = false;
                         }
                         
                     }
                 }
-
-                for (int i = 10; i < 25; i++)
+                //SECOND BUSH
+                for (int i = 0; i < Display.secondBushDimension[1]; i++)
                 {
-                    for (int j = 10; j < 50; j++)
+                    for (int j = 0; j < Display.secondBushDimension[0]; j++)
                     {
-                        if (j == tempX && i == tempY)
+                        if (j + Display.secondBushPosition[0]== tempX && i + Display.secondBushPosition[1] == tempY)
                         {
                             goodCoordinate = false;
                         }
-                        
                     }
                 }
-
-               
-
 
                 if (goodCoordinate)
                 {
@@ -178,14 +173,42 @@ namespace MonstersAndHeroes
                 if(monster.Alive)
                 {
                     Display.CharacterStat(monster);
-                    Console.ReadKey(true);
                 }
-                hero.Attack(monster);
+                int counter = 0;
+                while(true)
+                {
+                    Display.Attacks(hero, counter);
+                    ConsoleKey Key = Console.ReadKey(true).Key;
+                    switch (Key)
+                    {
+                        case ConsoleKey.LeftArrow:
+                            if (counter > 0)
+                            {
+                                counter--;
+                                Display.Attacks(hero, counter);
+                            }
+                            continue;
+                        case ConsoleKey.RightArrow:
+                            if (counter < 2)
+                            {
+                                counter++;
+                                Display.Attacks(hero, counter);
+                            }
+                            continue;
+                        case ConsoleKey.Enter:
+                            hero.Attack(monster, counter);
+                            break;
+                        default:
+                            continue;
+                    }
+                    break;
+                }
+               
                 Display.RefreshStat(monster);
                 Console.ReadKey(true);
                 if (monster.Alive)
                 {
-                    monster.Attack(hero);
+                    monster.Attack(hero, 0);
                     Display.RefreshStat(hero);
                 }
                 else
@@ -213,6 +236,8 @@ namespace MonstersAndHeroes
             Display.CharacterStat(hero);
             Display.MonsterStatArea();
             Display.HeroStatArea();
+            Display.Bush();
+            Display.CombatArea();
         }
       
     }

@@ -25,14 +25,7 @@ namespace MonstersAndHeroes
         }
 
         //OVERRIDEN METHODS
-        public override void Attack(Character other)
-        {
-            base.Attack(other);
-            if (!other.Alive)
-            {
-                this.Rest();
-                this.Harvest((Monster)other);
-            }
-        }
+       
+
     }
 }

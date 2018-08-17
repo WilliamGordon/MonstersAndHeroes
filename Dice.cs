@@ -23,6 +23,10 @@ namespace MonstersAndHeroes
         }
 
         //STATIC METHODS
+        public static int ThrowChoose(int min, int max)
+        {
+            return r.Next(min, max);
+        }
         public static int Throw()
         {
             return r.Next(Min, Max);

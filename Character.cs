@@ -12,14 +12,37 @@ namespace MonstersAndHeroes
         private bool _Alive;
         private int _Strengh;
         private int _Stamina;
-        private int _HP;
+        protected int _HP;
         private int _Gold;
         private int _Leather;
-        private int _MaxHP;
+        protected int _MaxHP;
         private int _BonusStrength;
         private int _BonusStamina;
-        private int _tempDamage;
+        protected int _tempDamage;
         private Coordinate _Coordinate;
+        private int _Level;
+        protected int _XP;
+        protected int _XPThreshold;
+
+        public int XPThreshold
+        {
+            get { return _XPThreshold; }
+            set { _XPThreshold = value; }
+        }
+
+
+        public int XP
+        {
+            get { return _XP; }
+            set { _XP = value; }
+        }
+
+
+        public int Level
+        {
+            get { return _Level; }
+        }
+
 
         public Coordinate Coordinate
         {
@@ -76,11 +99,14 @@ namespace MonstersAndHeroes
 
         public Character(int x, int y)
         {
+            _Level = 1;
+            _XP = 0;
+            _XPThreshold = 50;
             _Strengh = Dice.Thow4TimesGetBest3() + BonusStrength;
             _Stamina = Dice.Thow4TimesGetBest3() + BonusStamina;
             if (this is Human)
             {
-                _HP = 99;
+                _HP = 20;
             }
             else
             {
@@ -116,7 +142,19 @@ namespace MonstersAndHeroes
             }
         }
 
-        public virtual void Attack(Character other)
+        public void LevelUp()
+        {
+            this._Level++;
+            this._XPThreshold = _XPThreshold * 2;
+            this._XP = 0;
+            this._Strengh += (_Strengh * 20) / 100;
+            this._Stamina += (_Stamina * 20) / 100;
+            this._MaxHP += (_MaxHP * 20) / 100;
+            this._HP = _MaxHP;
+        }
+
+        //USELESS attack parameters....
+        public virtual void Attack(Character other, int attack)
         {
             if(other.Alive && this.Alive)
             {
@@ -125,6 +163,11 @@ namespace MonstersAndHeroes
                 _tempDamage = damage;
                 if(other.HP <= 0)
                 {
+                    this._XP += 10;
+                    if(this.XP >= this.XPThreshold)
+                    {
+                        this.LevelUp();
+                    }
                     other.Dead();
                     other._HP = 0;
                 }
@@ -162,6 +205,10 @@ namespace MonstersAndHeroes
             return 2;
         }
 
+        public void ReceiveDamage(int damage)
+        {
+            this._HP -= damage;
+        }
 
         //OVERRIDE METHODS OBJECT
         public override string ToString()
@@ -180,6 +227,7 @@ namespace MonstersAndHeroes
         {
             Dictionary<string, string> infoPerso = new Dictionary<string, string>();
             infoPerso.Add("Class", this.GetType().ToString().Substring(18));
+            infoPerso.Add("Level", _Level.ToString());
             infoPerso.Add("Strength", Strengh.ToString());
             infoPerso.Add("Stamina", Stamina.ToString());
             infoPerso.Add("Gold", Gold.ToString());
